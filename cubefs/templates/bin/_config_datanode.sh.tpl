@@ -14,6 +14,7 @@ jq -n \
   --arg exporterPort "$CBFS_DATANODE_EXPORTER_PORT" \
   --arg consulAddr "$CBFS_CONSUL_ADDR" \
   --arg disks "$CBFS_DATANODE_DISKS" \
+  --arg mediaType "$CBFS_MEDIA_TYPE" \
   '{
     "role": "datanode",
     "listen": $port,
@@ -27,7 +28,8 @@ jq -n \
     "consulAddr": $consulAddr,
     "exporterPort": $exporterPort,
     "masterAddr": $masterAddr,
-    "disks": $disks
+    "disks": $disks,
+    "mediaType": $mediaType
 }' | jq '.masterAddr |= split(",")' | jq '.disks |= split(",")' > /cfs/conf/datanode.json
 
 # merge the override config
