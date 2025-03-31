@@ -100,6 +100,7 @@ function create_master_config() {
 	local log_level=${CBFS_LOG_LEVEL:-error}
 	local consul_addr=${CBFS_CONSUL_ADDR:-http://consul-service.cubefs.svc.cluster.local:8500}
 	local metanode_reserved_mem=${CBFS_METANODE_RESERVED_MEM:-67108864}
+  local legacy_data_media_type=${CBFS_LEGACY_DATA_MEDIA_TYPE:-1}
 
 	jq -n \
 	  --arg clusterName "$cluster_name" \
@@ -113,6 +114,7 @@ function create_master_config() {
 	  --arg logLevel "$log_level" \
 	  --arg consulAddr "$consul_addr" \
 	  --arg metaNodeReservedMem "$metanode_reserved_mem" \
+	  --arg legacyDataMediaType "$legacy_data_media_type" \
 	  '{
 	    "role": "master",
 	    "ip": $ip,
@@ -128,7 +130,8 @@ function create_master_config() {
 	    "consulAddr": $consulAddr,
 	    "exporterPort": $exporterPort,
 	    "clusterName": $clusterName,
-	    "metaNodeReservedMem": $metaNodeReservedMem 
+	    "metaNodeReservedMem": $metaNodeReservedMem,
+	    "legacyDataMediaType": $legacyDataMediaType
 	}' > /cfs/conf/master.json
 }
 
@@ -192,6 +195,7 @@ function create_datanode_config() {
 	local raft_replica_port=${CBFS_RAFT_REPLICA_PORT:-17340}
 	local exporter_port=${CBFS_EXPORTER_PORT:-17350}
 	local consul_addr=${CBFS_CONSUL_ADDR:-http://consul-service.cubefs.svc.cluster.local:8500}
+	local media_type=${CBFS_MEDIA_TYPE:-1}
 
 	jq -n \
 	  --arg port "$port" \
@@ -204,6 +208,7 @@ function create_datanode_config() {
 	  --arg consulAddr "$consul_addr" \
 	  --arg disks "$CBFS_DISKS" \
 	  --arg zone "$CBFS_ZONE" \
+	  --arg mediaType "$media_type" \
 	  '{
 	    "role": "datanode",
 	    "listen": $port,
@@ -217,7 +222,8 @@ function create_datanode_config() {
 	    "exporterPort": $exporterPort,
 	    "masterAddr": $masterAddr,
 	    "zone": $zone,
-	    "disks": $disks
+	    "disks": $disks,
+	    "mediaType": $mediaType
 	}' | jq '.masterAddr |= split(",")' | jq '.disks |= split(",")' > /cfs/conf/datanode.json
 }
 

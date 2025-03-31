@@ -20,6 +20,7 @@ jq -n \
   --arg logLevel "$CBFS_MASTER_LOG_LEVEL" \
   --arg consulAddr "$CBFS_CONSUL_ADDR" \
   --arg metaNodeReservedMem "$CBFS_METANODE_RESERVED_MEM" \
+  --arg legacyDataMediaType "$CBFS_LEGACY_DATA_MEDIA_TYPE" \
   '{
     "role": "master",
     "ip": $ip,
@@ -35,7 +36,8 @@ jq -n \
     "consulAddr": $consulAddr,
     "exporterPort": $exporterPort,
     "clusterName": $clusterName,
-    "metaNodeReservedMem": $metaNodeReservedMem 
+    "metaNodeReservedMem": $metaNodeReservedMem,
+    "legacyDataMediaType": $legacyDataMediaType
 }' > /cfs/conf/master.json
 
 cat /cfs/conf/master.json

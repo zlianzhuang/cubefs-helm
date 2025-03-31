@@ -77,6 +77,8 @@ spec:
               value: {{ include "cubefs.datanode.disks" . | quote }}
             - name: CBFS_CONSUL_ADDR
               value: {{ tuple $envAll | include "cubefs.monitor.consul.url" | quote }}
+            - name: CBFS_MEDIA_TYPE
+              value: {{ .Values.datanode.media_type | quote }}
           volumeMounts:
             - name: cubefs-bin
               mountPath: /cfs/bin/config-datanode.sh

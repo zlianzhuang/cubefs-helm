@@ -76,6 +76,8 @@ spec:
               value: {{ tuple $envAll | include "cubefs.monitor.consul.url" | quote }}
             - name: CBFS_METANODE_RESERVED_MEM
               value: {{ .Values.master.metanode_reserved_mem | quote }}
+            - name: CBFS_LEGACY_DATA_MEDIA_TYPE
+              value: {{ .Value.master.legacy_data_media_type | quote }}
             - name: POD_IP
               valueFrom:
                 fieldRef:
